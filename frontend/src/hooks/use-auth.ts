@@ -1,28 +1,26 @@
+import { User } from "@/schema/user";
+import { useAtom } from "jotai/react";
+import { atomWithStorage } from "jotai/utils";
 import { useNavigate } from "react-router-dom";
-import { isDev } from "../utils";
-const TOKEN_KEY = "token";
+const TOKEN_KEY = "auth";
+
+const authInfo$ = atomWithStorage<{
+  token: string;
+  user: User;
+} | null>(TOKEN_KEY, null);
 
 export const useAuth = () => {
   const navigate = useNavigate();
-  const getToken = () => {
-    return localStorage.getItem(TOKEN_KEY);
-  };
-
-  const isAuthed = () => {
-    const token = getToken();
-    if (isDev) {
-      return token === "fake-jwt-token";
-    }
-    throw new Error("Not implemented yet");
-  };
+  const [authInfo, setAuthInfo] = useAtom(authInfo$);
 
   const logout = () => {
-    localStorage.removeItem(TOKEN_KEY);
+    setAuthInfo(null);
     navigate("/login");
   };
 
   return {
-    isAuthed,
+    authInfo,
     logout,
+    setAuthInfo
   };
 };

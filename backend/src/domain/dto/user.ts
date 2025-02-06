@@ -1,12 +1,12 @@
 import { createZodDto } from 'nestjs-zod/dto';
-
 import { z } from 'zod';
+
 import { Role } from '../role';
 
 export const userSchema = z.object({
   id: z.string(),
   name: z.string().min(2),
-  verified: z.number(),
+  verified: z.boolean(),
   email: z.string(),
   role: z.enum([Role.ADMIN, Role.USER]),
   createdAt: z.date(),

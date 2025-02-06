@@ -9,9 +9,10 @@ export class ProductController {
   @Get('')
   @Auth()
   findAll(@Ctx() ctx: RequestContext) {
-    return this.productService.findAll(ctx);
+    console.log('user', ctx.getUser());
+    return this.productService.findAll(ctx)
   }
-  
+
   @Post()
   @Auth()
   create() {}
