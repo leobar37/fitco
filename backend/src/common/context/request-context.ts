@@ -1,3 +1,4 @@
+import { Role } from '@/domain';
 import { User } from '@prisma/client';
 import { Request } from 'express';
 export type TRequestContext = {
@@ -18,5 +19,11 @@ export class RequestContext {
   getUser(): User {
     return this._user;
   }
+  isRol(rol: Role) {
+    const user = this.getUser();
+    if(user.role=== Role.ADMIN){
+      return true
+    }
+    return this.getUser().role === rol;
+  }
 }
-

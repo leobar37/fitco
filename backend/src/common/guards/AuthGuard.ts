@@ -9,6 +9,7 @@ import { isEmpty, uniq } from 'lodash';
 import { RequestContextService } from '../../common/context/request-context.service';
 import { AUTH_KEY, REQUEST_CONTEXT_KEY } from '../constants';
 import { parseContext } from '../context';
+import { Role } from '@/domain';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -35,9 +36,15 @@ export class AuthGuard implements CanActivate {
     if (!authorization) {
       throw new UnauthorizedException('Invalid token');
     }
-
-    req[REQUEST_CONTEXT_KEY] =
-      await this.requestContextService.fromRequest(req);
+    const requestContext = await this.requestContextService.fromRequest(req);
+    const rol =
+      authCodeAndRoles.filter((d) => d !== AUTH_KEY).at(0) ?? Role.USER;
+      console.log("rol" , rol);
+      
+    if (!requestContext.isRol(rol as Role)) {
+      throw new UnauthorizedException("ACCESS_DENIED");
+    }
+    req[REQUEST_CONTEXT_KEY] = requestContext;
     return true;
   }
 }
