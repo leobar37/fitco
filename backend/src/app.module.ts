@@ -1,16 +1,22 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PrismaModule } from './lib/prisma/prisma.module';
 import { RequestContextService } from './common/context/request-context.service';
-import { ProductService, UserService } from './services';
-import { JwtModule } from './lib/jwt/jwt.module';
-import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './common/guards/AuthGuard';
-
+import { AuthController, ProductController } from './controllers';
+import { JwtModule } from './lib/jwt/jwt.module';
+import { PrismaModule } from './lib/prisma/prisma.module';
+import { ProductService, UserService } from './services';
+import { AuthService } from './services/auth.service';
 @Module({
   imports: [PrismaModule, JwtModule],
-  controllers: [AppController],
+  controllers: [
+    AppController,
+    AppController,
+    ProductController,
+    AuthController,
+  ],
   providers: [
     AppService,
     RequestContextService,
@@ -20,6 +26,7 @@ import { AuthGuard } from './common/guards/AuthGuard';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    AuthService,
   ],
 })
 export class AppModule {}

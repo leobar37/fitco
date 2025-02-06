@@ -5,7 +5,15 @@ import { RequestContext } from '@/common/context';
 @Injectable()
 export class ProductService {
   constructor(private prismaService: PrismaService) {}
-
+  
+  findAll(ctx: RequestContext) {
+    return this.prismaService.product.findMany({
+      where: {
+        userId: ctx.getUser().id,
+        deletedAt: null,
+      },
+    });
+  }
   create(ctx: RequestContext, dto: CreateProductDto) {
     return this.prismaService.product.create({
       data: {

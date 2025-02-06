@@ -10,6 +10,7 @@ export const userSchema = z.object({
   email: z.string(),
   role: z.enum([Role.ADMIN, Role.USER]),
   createdAt: z.date(),
+  password: z.string(),
 });
 
 export class UserDto extends createZodDto(userSchema) {}
@@ -19,6 +20,7 @@ export const createUserDtoSchema = userSchema.pick({
   email: true,
   role: true,
   verified: true,
+  password: true,
 });
 
 export class CreatUserDto extends createZodDto(createUserDtoSchema) {}
