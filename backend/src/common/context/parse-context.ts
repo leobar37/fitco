@@ -1,16 +1,17 @@
 import {
-    ArgumentsHost,
-    ExecutionContext,
-    InternalServerErrorException,
+  ArgumentsHost,
+  ExecutionContext,
+  InternalServerErrorException,
 } from '@nestjs/common';
-import { REQUEST_CONTEXT_KEY } from './request-context';
+import { REQUEST_CONTEXT_KEY } from '../constants';
+
 export const parseContext = (context: ArgumentsHost | ExecutionContext) => {
   const type = context.getType();
   if (type === 'http') {
     const ctx = context.switchToHttp();
     return {
       req: ctx.getRequest(),
-      reply: ctx.getResponse(),
+      res: ctx.getResponse(),
     };
   }
   throw new InternalServerErrorException(`Unknown context type ${type}`);

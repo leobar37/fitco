@@ -24,7 +24,10 @@ model User {
   name      String
   verified  Boolean   @default(false)
   email     String    @unique
+  deletedAt  DateTime?
   role  Role @default(USER)
+  products  Product[] 
+  password String
 }
 
 model Product{
@@ -33,8 +36,10 @@ model Product{
   description String
   price Int 
   stock Int
-  createdAt DateTime
-  
+  createdAt DateTime?
+  deletedAt DateTime?
+  userId String
+  user User @relation(fields: [userId] , references: [id]) 
   @@index([name])
   @@index([price])
 }

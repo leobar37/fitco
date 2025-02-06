@@ -1,12 +1,12 @@
+import { User } from '@prisma/client';
 import { Request } from 'express';
-import { UserDto } from '@/domain/entities/user';
 export type TRequestContext = {
   _req: Request;
-  user: UserDto;
+  user: User;
 };
 export class RequestContext {
   _req: Request;
-  _user: UserDto;
+  _user: User;
   constructor(opts: TRequestContext) {
     this._req = opts._req;
     this._user = opts.user;
@@ -15,9 +15,8 @@ export class RequestContext {
   getRequest(): Request {
     return this._req;
   }
-  getUser(): UserDto {
+  getUser(): User {
     return this._user;
   }
 }
 
-export const REQUEST_CONTEXT_KEY ="__request_context"
